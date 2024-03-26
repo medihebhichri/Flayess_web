@@ -1,0 +1,117 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Project Management
+{% endblock %}
+
+{% block stylesheets %}
+	{{ parent() }}
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"/>
+	<link
+	rel="stylesheet" href="{{asset("css/style.css")}}"/>
+	<style>
+        .usp-positive {
+            color: green;
+            font-weight: bold;
+        }
+        .usp-negative {
+            color: red;
+            font-weight: bold;
+        }
+    </style>
+{# Link to your custom animations and styles #}
+{% endblock %}
+
+{% block body %}
+	<div class="container">
+		<div class="gradient-bg mb-4">
+			<h1>Project Management</h1>
+		</div>
+
+		<!-- Search and Filter Form with enhanced UI -->
+		<form id="searchForm" action="{{ path('app_projects_index') }}" method="get" class="search-form">
+			<div class="row gx-2 align-items-center">
+				<div class="col">
+					<input type="text" name="search" placeholder="Search projects..." class="search-input" value="{{ app.request.query.get('search') }}">
+				</div>
+				<div class="col">
+					<select name="category" class="select-input">
+						<option value="">All Categories</option>
+						{% for category in categories %}
+							<option value="{{ category.id }}" {% if category.id == app.request.query.get('category') %} selected {% endif %}>
+								{{ category.categoryName }}
+							</option>
+						{% endfor %}
+
+					</select>
+				</div>
+
+
+				<div class="col">
+					<input type="number" name="uniqueSellingPointsMax" placeholder="Max Unique Selling Points (0-100)" min="0" max="100" class="search-input" value="{{ app.request.query.get('uniqueSellingPointsMax') }}">
+				</div>
+
+
+				<div class="col-auto">
+					<button type="submit" class="btn-search">
+						<i class="fas fa-search">Search</i>
+					</button>
+				</div>
+			</div>
+		</form>
+
+		<!-- Projects Table with hover effects -->
+		<div class="table-responsive">
+			<table>
+				<thead>
+					<tr>
+						<th>Project Name</th>
+						<th>Category</th>
+						<th>Unique Selling Points</th>
+						<!-- New column header -->
+						<th>Actions</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for project in projects %}
+						<tr>
+							<td>{{ project.name }}</td>
+							<td>{{ project.category.name }}</td>
+							<td>
+								{{ project.uniqueSellingPoints }}
+								{% if project.uniqueSellingPoints > 0 %}
+									<span class="usp-positive">↑</span>
+								{% elseif project.uniqueSellingPoints < 0 %}
+									<span class="usp-negative">↓</span>
+								{% endif %}
+							</td>
+
+
+							<!-- Displaying unique selling points -->
+							<td class="actions">
+								<a href="{{ path('app_projects_show', {'id': project.id}) }}" class="action-button view-action">View</a>
+								<a href="{{ path('app_projects_edit', {'id': project.id}) }}" class="action-button edit-action">Edit</a>
+								<form method="post" action="{{ path('app_projects_delete', {'id': project.id}) }}" onsubmit="return confirm('Are you sure?');">
+									<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ project.id) }}">
+									<button type="submit" class="action-button delete-action">Delete</button>
+								</form>
+							</td>
+						</tr>
+					{% else %}
+						<tr>
+							<td colspan="4">No projects found</td>
+						</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+
+		<div class="button-group">
+			<a href="{{ path('app_projects_new') }}" class="btn btn-primary">Add Project</a>
+			<a href="{{ path('app_categories_index') }}" class="btn btn-primary">View Categories</a>
+			<a href="https://share.imagica.ai?q=7794f5b1-ec3b-413b-8ea3-20b456ab2988" class="btn btn-secondary" target="_blank">Test Project</a>
+		</div>
+	</div>
+
+	<script src="path/to/your/custom/scripts.js"></script>
+	{# For handling dynamic behaviors like confirmDelete() #}
+{% endblock %}

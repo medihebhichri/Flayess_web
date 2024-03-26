@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+{% block stylesheets %}
+	
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"/>
+	<link
+	rel="stylesheet" href="{{asset("css/new_style.css")}}"/>
+{% endblock %}
+{% block title %}New Projects{% endblock %}
+
+{% block body %}
+    <h1>Create new Projects</h1>
+
+    {{ include('projects/_form.html.twig') }}
+
+    <a href="{{ path('app_projects_index') }}">back to list</a>
+{% endblock %}

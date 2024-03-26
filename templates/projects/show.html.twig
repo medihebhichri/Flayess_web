@@ -1,0 +1,89 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Projects
+{% endblock %}
+{% block stylesheets %}
+	
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"/>
+	<link
+	rel="stylesheet" href="{{asset("css/new_style.css")}}"/>
+{% endblock %}
+
+{% block body %}
+	<h1 class="display-4">Projects</h1>
+
+	<div class="table-responsive">
+		<table class="table table-bordered table-hover">
+			<tbody>
+				<tr>
+					<th scope="row" class="w-25">Image</th>
+					<td><img src="{{ project.image }}" alt="Project Image" style="max-width: 100%; height: auto;"/></td>
+				</tr>
+
+
+				<tr>
+					<th scope="row" class="w-25">Name</th>
+					<td>{{ project.name }}</td>
+				</tr>
+				<tr>
+					<th scope="row" class="w-25">Description</th>
+					<td>{{ project.description }}</td>
+				</tr>
+				<tr>
+					<th scope="row" class="w-25">Target Audience</th>
+					<td>{{ project.targetAudience }}</td>
+				</tr>
+				<tr>
+					<th scope="row" class="w-25">Demand In Market</th>
+					<td>{{ project.demandInMarket }}</td>
+				</tr>
+				<tr>
+					<th scope="row" class="w-25">Development Timeline</th>
+					<td>{{ project.developmentTimeline }}</td>
+				</tr>
+				<tr>
+					<th scope="row" class="w-25">Budget & Funding Requirements</th>
+					<td>{{ project.budgetFundingRequirements }}</td>
+				</tr>
+				<tr>
+					<th scope="row" class="w-25">Risk Analysis</th>
+					<td>{{ project.riskAnalysis }}</td>
+				</tr>
+				<tr>
+					<th scope="row" class="w-25">Market Strategy</th>
+					<td>{{ project.marketStrategy }}</td>
+				</tr>
+				<tr>
+					<th scope="row" class="w-25">Exit Strategy</th>
+					<td>{{ project.exitStrategy }}</td>
+				</tr>
+				<tr>
+					<th scope="row" class="w-25">Team Background</th>
+					<td>{{ project.teamBackground }}</td>
+				</tr>
+				<tr>
+					<th scope="row" class="w-25">Tags</th>
+					<td>{{ project.tags }}</td>
+				</tr>
+				<tr>
+					<th scope="row" class="w-25">Unique Selling Points</th>
+					<td>{{ project.uniqueSellingPoints }}</td>
+				</tr>
+				<tr>
+					<th scope="row" class="w-25">Daily Price Of Assets</th>
+					<td>{{ project.dailyPriceOfAssets }}</td>
+				</tr>
+				<tr>
+					<th scope="row" class="w-25">Investors Equity</th>
+					<td>{{ project.investorsEquity }}</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+
+	<div class="mt-5">
+		<a href="{{ path('app_projects_index') }}" class="btn btn-secondary mr-3">Back to List</a>
+		<a href="{{ path('app_projects_edit', {'id': project.id}) }}" class="btn btn-primary mr-3">Edit</a>
+		{{ include('projects/_delete_form.html.twig') }}
+	</div>
+{% endblock %}
