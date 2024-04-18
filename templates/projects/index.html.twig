@@ -1,117 +1,235 @@
-{% extends 'base.html.twig' %}
 
-{% block title %}Project Management
+
+{% block title %}
+
 {% endblock %}
 
 {% block stylesheets %}
-	{{ parent() }}
+
 	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"/>
-	<link
-	rel="stylesheet" href="{{asset("css/style.css")}}"/>
+	<link rel="stylesheet" href="{{ asset('css/style.css') }}">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0-alpha1/css/bootstrap.min.css">
 	<style>
-        .usp-positive {
-            color: green;
-            font-weight: bold;
+		/* Custom Styles */
+		   body {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            height: 100%;
         }
-        .usp-negative {
-            color: red;
-            font-weight: bold;
+
+         #main-content {
+            height: calc(100vh - 6rem);
+            overflow-y: scroll;
         }
-    </style>
-{# Link to your custom animations and styles #}
+		.page-title {
+			padding: 2rem 0;
+			background-image: linear-gradient(to bottom right, rgb(40, 167, 69), rgb(20, 122, 37));
+			color: white;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+		}
+
+		form label {
+			font-weight: normal !important;
+		}
+
+		table th {
+			position: sticky;
+			top: 0;
+			z-index: 1;
+			background-color: #FFFFFF;
+			border-bottom: none;
+			box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+		}
+
+		td svg {
+			width: 1em;
+			height: 1em;
+			fill: currentColor;
+			vertical-align: middle;
+			margin-top: -3px;
+		}
+
+		tr:hover td button {
+			opacity: 1;
+			transform: translateX(0);
+		}
+
+		tr:not(:last-child):hover td:after {
+			content: "";
+			position: absolute;
+			left: 0;
+			right: 0;
+			top: 0;
+			bottom: 0;
+			pointer-events: none;
+			opacity: 0.1;
+			background-image: radial-gradient(circle at 25%, transparent 2px, #000 2px);
+			background-size: 40px 40px;
+			background-position: 0 0, 10px 10px;
+			filter: contrast(0.5);
+		}
+
+		.project-buttons {
+			visibility: hidden;
+			opacity: 0;
+			transition: all 0.2s ease-out;
+		}
+
+		tr:hover .project-buttons {
+			visibility: visible;
+			opacity: 1;
+		}
+
+		@media only screen and(max-width: 768px) {
+			.project-details {
+				flex: 1;
+			}
+
+			.project-actions {
+				order: 1;
+			}
+
+			.project-details {
+				order: 2;
+			}
+		}
+		.container {
+  width: 100%;
+  max-width: 100%; /* Remove any limitations on the container width */
+}
+main {
+  width: 100%;
+  padding: 0; /* Remove any paddings */
+  margin: 0; /* Remove any margins */
+}
+.{
+	background-color:rgb(139,137,253);
+}
+.btn-group.project-buttons .visit-project-link {
+    background-color: rgb(139, 137, 253); /* Your desired color */
+    border-color: rgb(139, 137, 253); /* Adjust border color if needed */
+  }
+
+
+	</style>
 {% endblock %}
 
 {% block body %}
-	<div class="container">
-		<div class="gradient-bg mb-4">
-			<h1>Project Management</h1>
-		</div>
+	<main class="py-6 container">
+		<form id="searchForm" action="{{ path('app_projects_index') }}" method="GET">
+			<div class="row g-3">
+				<aside class="col-md-3">
+					<div class="card">
+						<div class="card-body">
+							<h3 class="card-title">Filter &amp; Search</h3>
+							<hr/>
+							<div class="mb-3">
+								<label for="searchInput" class="form-label">Search Input:</label>
+								<input type="text" id="searchInput" name="search" placeholder="Search projects..." class="form-control" value="{{ app.request.query.get('search') }}">
+							</div>
+							<div class="mb-3">
+								<label for="categorySelect" class="form-label">Category:</label>
+								<select id="categorySelect" name="category" class="form-select">
+									<option value="" selected hidden>All Categories</option>
+									{% for category in categories %}
+										<option value="{{ category.id }}" {% if category.id == app.request.query.get('category') %} selected {% endif %}>
+											{{ category.categoryName }}
+										</option>
+									{% endfor %}
+								</select>
+							</div>
+							<div class="mb-3">
+								<label for="uniqueSellingPointsRange" class="form-label">Unique
+									                                    Selling Points:</label>
+								<input type="range" id="uniqueSellingPointsRange" name="uniqueSellingPointsMax" min="-100" max="100" step="1" class="form-range" value="{{ app.request.query.get('uniqueSellingPointsMax') }}">
+								<output id="uniqueSellingPointsOutput" class="form-control mt-2">{{ app.request.query.get('uniqueSellingPointsMax') }}</output>
+							</div>
+							<button type="submit" class="btn btn-success float-end">Apply Filters</button>
+						</div>
+					</div>
+				</aside>
+				<section class="col-md-9">
+					<table class="table table-striped">
+						<thead>
+							<tr>
+							
+								<th scope="col">Project Name</th>
+								<th scope="col">Category</th>
+								<th scope="col">Unique Selling Points</th>
+								<th scope="col">state</th>
+								<th scope="col" class="project-actions">Actions</th>
+								
+								
+							</tr>
+						</thead>
+						<tbody>
+							{% for project in projects %}
+								<tr>
+									<td class="project-details">
+										{{ project.name }}
+									</td>
+									<td class="project-details">
+										{{ project.category.name }}
+									</td>
+									<td class="project-details">
+										<span class="usp-{{ project.uniqueSellingPoints >= 0 ? 'positive' : 'negative' }} me-2">
+											{{ project.uniqueSellingPoints < 0 ? '-' ~ (project.uniqueSellingPoints * -1) : project.uniqueSellingPoints }}
+											{% if project.uniqueSellingPoints != 0 %}
+												<svg viewbox="0 0 10 10" xmlns="http://www.w3.org/2000/svg" style="width: 12px; height: 12px;">  <polygon points="0,0 10,0 5,10" stroke="currentColor" fill="transparent"/>
+</svg>
+											{% endif %}
+										</span>
+									</td>
+									<td class="project-details">
+										{{ project.state }}
+									</td>
+									<td class="project-actions">
+										<div class="btn-group project-buttons">
+											<a href="{{ path('app_projects_show', {'id': project.id}) }}" class="btn btn-light visit-project-link">Visit</a>
+											<a href="{{ path('app_projects_edit', {'id': project.id}) }}" class="btn btn-light edit-project-link">Edit</a>
+											<form method="post" action="{{ path('app_projects_delete', {'id': project.id}) }}" onsubmit="return confirm('Are you sure?');">
+												<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ project.id) }}">
+												<button type="submit" class="btn btn-light delete-project-link">Delete</button>
+											</form>
+										</div>
 
-		<!-- Search and Filter Form with enhanced UI -->
-		<form id="searchForm" action="{{ path('app_projects_index') }}" method="get" class="search-form">
-			<div class="row gx-2 align-items-center">
-				<div class="col">
-					<input type="text" name="search" placeholder="Search projects..." class="search-input" value="{{ app.request.query.get('search') }}">
-				</div>
-				<div class="col">
-					<select name="category" class="select-input">
-						<option value="">All Categories</option>
-						{% for category in categories %}
-							<option value="{{ category.id }}" {% if category.id == app.request.query.get('category') %} selected {% endif %}>
-								{{ category.categoryName }}
-							</option>
-						{% endfor %}
-
-					</select>
-				</div>
-
-
-				<div class="col">
-					<input type="number" name="uniqueSellingPointsMax" placeholder="Max Unique Selling Points (0-100)" min="0" max="100" class="search-input" value="{{ app.request.query.get('uniqueSellingPointsMax') }}">
-				</div>
-
-
-				<div class="col-auto">
-					<button type="submit" class="btn-search">
-						<i class="fas fa-search">Search</i>
-					</button>
-				</div>
+									</td>
+									
+									
+								</tr>
+							{% else %}
+								<tr>
+									<td colspan="4" class="text-center">No projects found.</td>
+								</tr>
+							{% endfor %}
+						</tbody>
+					</table>
+				</section>
 			</div>
 		</form>
-
-		<!-- Projects Table with hover effects -->
-		<div class="table-responsive">
-			<table>
-				<thead>
-					<tr>
-						<th>Project Name</th>
-						<th>Category</th>
-						<th>Unique Selling Points</th>
-						<!-- New column header -->
-						<th>Actions</th>
-					</tr>
-				</thead>
-				<tbody>
-					{% for project in projects %}
-						<tr>
-							<td>{{ project.name }}</td>
-							<td>{{ project.category.name }}</td>
-							<td>
-								{{ project.uniqueSellingPoints }}
-								{% if project.uniqueSellingPoints > 0 %}
-									<span class="usp-positive">↑</span>
-								{% elseif project.uniqueSellingPoints < 0 %}
-									<span class="usp-negative">↓</span>
-								{% endif %}
-							</td>
-
-
-							<!-- Displaying unique selling points -->
-							<td class="actions">
-								<a href="{{ path('app_projects_show', {'id': project.id}) }}" class="action-button view-action">View</a>
-								<a href="{{ path('app_projects_edit', {'id': project.id}) }}" class="action-button edit-action">Edit</a>
-								<form method="post" action="{{ path('app_projects_delete', {'id': project.id}) }}" onsubmit="return confirm('Are you sure?');">
-									<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ project.id) }}">
-									<button type="submit" class="action-button delete-action">Delete</button>
-								</form>
-							</td>
-						</tr>
-					{% else %}
-						<tr>
-							<td colspan="4">No projects found</td>
-						</tr>
-					{% endfor %}
-				</tbody>
-			</table>
-		</div>
-
-		<div class="button-group">
-			<a href="{{ path('app_projects_new') }}" class="btn btn-primary">Add Project</a>
-			<a href="{{ path('app_categories_index') }}" class="btn btn-primary">View Categories</a>
-			<a href="https://share.imagica.ai?q=7794f5b1-ec3b-413b-8ea3-20b456ab2988" class="btn btn-secondary" target="_blank">Test Project</a>
+	</main>
+	<div class="bg-white rounded-lg shadow-md p-8 mt-6">
+		<div class="w-full text-center">
+			<style scoped>
+				.btn-primary {
+					background-color: rgb(83, 81, 251) !important; /* Change this HEX code to the one you prefer */
+				}
+			</style>
+			<a href="{{ path('app_projects_new') }}" class="btn btn-primary mx-3" aria-label="Add New Project">Add New Project</a>
+			<a href="{{ path('app_categories_index') }}" class="btn btn-primary mx-3" aria-label="View Existing Categories">View Categories</a>
+			<a href="https://share.imagica.ai?q=7794f5b1-ec3b-413b-8ea3-20b456ab2988" class="btn btn-secondary mx-3" target="_blank" aria-label="Open Test Project In New Tab">Test Project</a>
 		</div>
 	</div>
-
-	<script src="path/to/your/custom/scripts.js"></script>
-	{# For handling dynamic behaviors like confirmDelete() #}
-{% endblock %}
+</div></div><footer class="bg-dark text-white py-3 fixed-bottom">
+<div class="container">
+	<div class="row">
+		<div class="col-12 text-center">
+			© Copyright
+			{{ "now" | date("Y") }}
+			Flayess
+		</div>
+	</div>
+</div></footer><script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0-alpha1/js/bootstrap.bundle.min.js"></script>{% endblock %}

@@ -14,128 +14,101 @@ use Doctrine\ORM\Mapping as ORM;
 class Projects
 {
     /**
-     * @var int
-     *
-     * @ORM\Column(name="id", type="integer", nullable=false)
      * @ORM\Id
+     * @ORM\Column(name="id", type="integer", nullable=false)
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
-    private $id;
+    private int $id;
 
     /**
-     * @var string|null
-     *
      * @ORM\Column(name="image", type="string", length=900, nullable=true)
      */
-    private $image;
+    private ?string $image = null;
 
     /**
-     * @var string|null
-     *
-     * @ORM\Column(name="NAME", type="string", length=255, nullable=true)
+     * @ORM\Column(name="NAME", type="string", length=255, nullable=true, unique=true)
      */
-    private $name;
+    private ?string $name = null;
 
     /**
-     * @var string|null
-     *
      * @ORM\Column(name="description", type="string", length=1000, nullable=true)
      */
-    private $description;
+    private ?string $description = null;
 
     /**
-     * @var string|null
-     *
      * @ORM\Column(name="target_audience", type="string", length=255, nullable=true)
      */
-    private $targetAudience;
+    private ?string $targetAudience = null;
 
     /**
-     * @var string|null
-     *
      * @ORM\Column(name="demand_in_market", type="string", length=255, nullable=true)
      */
-    private $demandInMarket;
+    private ?string $demandInMarket = null;
 
     /**
-     * @var string|null
-     *
      * @ORM\Column(name="development_timeline", type="string", length=255, nullable=true)
      */
-    private $developmentTimeline;
+    private ?string $developmentTimeline = null;
 
     /**
-     * @var float|null
-     *
      * @ORM\Column(name="budget_funding_requirements", type="float", precision=10, scale=0, nullable=true)
      */
-    private $budgetFundingRequirements;
+    private ?float $budgetFundingRequirements = null;
 
     /**
-     * @var string|null
-     *
-     * @ORM\Column(name="risk_analysis", type="string", length=1000, nullable=true)
+     * @ORM\Column(name="risk_analysis", type="text", length=65535, nullable=true)
      */
-    private $riskAnalysis;
+    private ?string $riskAnalysis = null;
 
     /**
-     * @var string|null
-     *
-     * @ORM\Column(name="market_strategy", type="string", length=1000, nullable=true)
+     * @ORM\Column(name="market_strategy", type="text", length=65535, nullable=true)
      */
-    private $marketStrategy;
+    private ?string $marketStrategy = null;
 
     /**
-     * @var string|null
-     *
-     * @ORM\Column(name="exit_strategy", type="string", length=1000, nullable=true)
+     * @ORM\Column(name="exit_strategy", type="text", length=65535, nullable=true)
      */
-    private $exitStrategy;
+    private ?string $exitStrategy = null;
 
     /**
-     * @var string|null
-     *
      * @ORM\Column(name="team_background", type="text", length=65535, nullable=true)
      */
-    private $teamBackground;
+    private ?string $teamBackground = null;
 
     /**
-     * @var string|null
-     *
      * @ORM\Column(name="tags", type="text", length=65535, nullable=true)
      */
-    private $tags;
+    private ?string $tags = null;
 
     /**
-     * @var string|null
-     *
      * @ORM\Column(name="unique_selling_points", type="string", length=1000, nullable=true)
      */
-    private $uniqueSellingPoints;
+    private ?string $uniqueSellingPoints = null;
 
     /**
-     * @var string|null
-     *
      * @ORM\Column(name="daily_price_of_assets", type="text", length=65535, nullable=true)
      */
-    private $dailyPriceOfAssets;
+    private ?string $dailyPriceOfAssets = null;
 
     /**
-     * @var string|null
-     *
      * @ORM\Column(name="investors_equity", type="text", length=65535, nullable=true)
      */
-    private $investorsEquity;
+
+     /**
+ * @ORM\Column(name="state", type="string", length=255, options={"default"="waiting"})
+ */
+    private string $state = "waiting";
+    private ?string $investorsEquity = null;
 
     /**
-     * @var \Categories
-     *
      * @ORM\ManyToOne(targetEntity="Categories")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="category_id", referencedColumnName="id")
      * })
      */
-    private $category;
+
+     
+    private Categories $category;
 
     public function getId(): ?int
     {
@@ -333,6 +306,17 @@ class Projects
 
         return $this;
     }
+    public function getState(): string
+{
+    return $this->state;
+}
+
+public function setState(string $state): static
+{
+    $this->state = $state;
+
+    return $this;
+}
 
 
 }

@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\Categories;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -14,9 +15,21 @@ class CategoriesType extends AbstractType
         $builder
             ->add('categoryName')
             ->add('subfield')
-            ->add('typeOfFunding')
-            ->add('profitabilityIndex')
-        ;
+            ->add('typeOfFunding', ChoiceType::class, [
+                'choices' => [
+                    'Crowdfunding' => 'crowdfunding', // 'Label' => 'value'
+                    'Self Funding' => 'selffunding',
+                    'Venture Capital' => 'venturecapital',
+                ],
+            ])
+            ->add('profitabilityIndex', ChoiceType::class, [
+                'choices' => [
+                    'High' => 'high', // 'Label' => 'value'
+                    'Medium' => 'medium',
+                    'Low' => 'low',
+                ],
+            ]);
+            
     }
 
     public function configureOptions(OptionsResolver $resolver): void

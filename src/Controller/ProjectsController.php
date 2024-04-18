@@ -18,10 +18,10 @@ use Symfony\Component\Routing\Annotation\Route;
 use App\Repository\CategoriesRepository;
 use Doctrine\ORM\EntityManagerInterface;
 
-#[Route('/projects')]
+#[Route('/')]
 class ProjectsController extends AbstractController
 {
-#[Route('/', name: 'app_projects_index', methods: ['GET'])]
+#[Route('/projects', name: 'app_projects_index', methods: ['GET'])]
 public function index(Request $request, ProjectsRepository $projectsRepository, CategoriesRepository $categoryRepository): Response
 {
     $searchTerm = $request->query->get('search');
@@ -92,7 +92,7 @@ public function new(Request $request, EntityManagerInterface $entityManager, Slu
     #[Route('/{id}/edit', name: 'app_projects_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Projects $project, ObjectManager $objectManager): Response // Change EntityManagerInterface to ObjectManager
     {
-        $form = $this->createForm(ProjectsType::class, $project);
+        $form = $this->createForm(ProjectsType::class, $project,);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
