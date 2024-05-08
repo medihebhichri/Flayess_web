@@ -21,23 +21,23 @@ use Doctrine\ORM\EntityManagerInterface;
 #[Route('/')]
 class ProjectsController extends AbstractController
 {
-#[Route('/projects', name: 'app_projects_index', methods: ['GET'])]
-public function index(Request $request, ProjectsRepository $projectsRepository, CategoriesRepository $categoryRepository): Response
-{
-    $searchTerm = $request->query->get('search');
-    $categoryId = $request->query->get('category');
-    $status = $request->query->get('status');
-    $sortOption = $request->query->get('sort');
-    $uniqueSellingPointsMax = $request->query->get('uniqueSellingPointsMax');
-    $uniqueSellingPointsMax = $uniqueSellingPointsMax !== null ? (int) $uniqueSellingPointsMax : null;
-
+    #[Route('/projects', name: 'app_projects_index', methods: ['GET'])]
+    public function index(Request $request, ProjectsRepository $projectsRepository, CategoriesRepository $categoryRepository): Response
+    {
+        $searchTerm = $request->query->get('search');
+        $categoryId = $request->query->get('category');
+        $status = $request->query->get('status');
+        $sortOption = $request->query->get('sort');
+        $uniqueSellingPointsMax = $request->query->get('uniqueSellingPointsMax');
+        $uniqueSellingPointsMax = $uniqueSellingPointsMax !== null ? (int) $uniqueSellingPointsMax : null;
     
-    if (null !== $categoryId && is_numeric($categoryId)) {
-        $categoryId = (int) $categoryId;
-    } else {
-        $categoryId = null; // Ensure it falls back to null if not set or not a numeric value
-    }
-    $projects = $projectsRepository->findByFilters($searchTerm, $categoryId, $status, $sortOption, $uniqueSellingPointsMax);
+        if (null !== $categoryId && is_numeric($categoryId)) {
+            $categoryId = (int) $categoryId;
+        } else {
+            $categoryId = null; // Ensure it falls back to null if not set or not a numeric value
+        }
+    
+        $projects = $projectsRepository->findByFiltersWithCategory($searchTerm, $categoryId, $status, $sortOption, $uniqueSellingPointsMax);
 
     $categories = $categoryRepository->findAll(); // Fetch all categories
 
@@ -45,7 +45,8 @@ public function index(Request $request, ProjectsRepository $projectsRepository, 
         'projects' => $projects,
         'categories' => $categories, // Pass categories to the template
     ]);
-}
+    }
+    
 
 #[Route('/new', name: 'app_projects_new', methods: ['GET', 'POST'])]
 public function new(Request $request, EntityManagerInterface $entityManager, SluggerInterface $slugger): Response {
@@ -96,6 +97,7 @@ public function new(Request $request, EntityManagerInterface $entityManager, Slu
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $project->setState('waiting');
             $objectManager->flush();
 
             return $this->redirectToRoute('app_projects_index', [], Response::HTTP_SEE_OTHER);
@@ -117,4 +119,5 @@ public function new(Request $request, EntityManagerInterface $entityManager, Slu
 
         return $this->redirectToRoute('app_projects_index', [], Response::HTTP_SEE_OTHER);
     }
+    
 }

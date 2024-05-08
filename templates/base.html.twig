@@ -70,19 +70,26 @@
 						<ul class="dashboard-menu">
 							<li>
 								<a href="dashboard.html" class="active">
-									<i class="flaticon-man"></i>Dashboard</a>
+									<i class="flaticon-man"></i>Dashboard
+								</a>
 							</li>
 							<li>
-								<a href="{{ path('app_projects_index') }}"
-									<i class="flaticon-coin"></i>Operations</a>
-							</li>
-							<li>
-								<a href="{{ path('app_projects_index') }}" id="project-btn">
-									<i class="flaticon-interest"></i>My Projects</a>
+								<a>
+									<i class="flaticon-interest"></i>My Projects
+								</a>
+								<ul class="submenu">
+									<li>
+										<a href="{{ path('app_projects_index') }}" id="project-btn">Project List</a>
+									</li>
+									<li>
+										<a href="{{ path('category_project_statistics') }}" >Statistics</a>
+									</li>
+								</ul>
 							</li>
 							<li>
 								<a href="withdraw.html">
-									<i class="flaticon-atm"></i>Withdraw</a>
+									<i class="flaticon-atm"></i>Withdraw
+								</a>
 							</li>
 							<li>
 								<a href="fund-transfer.html">
@@ -91,29 +98,36 @@
 							</li>
 							<li>
 								<a href="partners.html">
-									<i class="flaticon-deal"></i>Partners</a>
+									<i class="flaticon-deal"></i>Partners
+								</a>
 							</li>
 							<li>
 								<a href="setting.html">
-									<i class="flaticon-gears"></i>Settings</a>
+									<i class="flaticon-gears"></i>Settings
+								</a>
 							</li>
 							<li>
 								<a href="notification.html">
-									<i class="flaticon-bell"></i>Notifications</a>
+									<i class="flaticon-bell"></i>Notifications
+								</a>
 							</li>
 							<li>
 								<a href="ticket.html">
-									<i class="flaticon-sms"></i>Tickets</a>
+									<i class="flaticon-sms"></i>Tickets
+								</a>
 							</li>
 							<li>
 								<a href="promotional-metarials.html">
-									<i class="flaticon-deal"></i>Promotional</a>
+									<i class="flaticon-deal"></i>Promotional
+								</a>
 							</li>
 							<li>
 								<a href="javascript:void(0)">
-									<i class="flaticon-right-arrow"></i>Logout</a>
+									<i class="flaticon-right-arrow"></i>Logout
+								</a>
 							</li>
 						</ul>
+
 					</div>
 				</div>
 				<div class="dasboard-body" id="dashboard-content">

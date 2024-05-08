@@ -106,10 +106,15 @@ class Projects
      *   @ORM\JoinColumn(name="category_id", referencedColumnName="id")
      * })
      */
+    private ?Categories $category = null; // Make the property nullable and initialize it to null
 
-     
-    private Categories $category;
+    // Other methods...
 
+    public function __construct()
+    {
+        // Initialize any other properties if needed
+        $this->category = null; // Ensure category is initialized to null
+    }
     public function getId(): ?int
     {
         return $this->id;

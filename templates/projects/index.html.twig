@@ -1,8 +1,4 @@
-
-
-{% block title %}
-
-{% endblock %}
+{% extends 'base2.html.twig' %}
 
 {% block stylesheets %}
 
@@ -11,17 +7,17 @@
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0-alpha1/css/bootstrap.min.css">
 	<style>
 		/* Custom Styles */
-		   body {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            height: 100%;
-        }
+		body {
+			margin: 0;
+			padding: 0;
+			box-sizing: border-box;
+			height: 100%;
+		}
 
-         #main-content {
-            height: calc(100vh - 6rem);
-            overflow-y: scroll;
-        }
+		#main-content {
+			height: calc(100vh - 6rem);
+			overflow-y: scroll;
+		}
 		.page-title {
 			padding: 2rem 0;
 			background-image: linear-gradient(to bottom right, rgb(40, 167, 69), rgb(20, 122, 37));
@@ -97,23 +93,21 @@
 			}
 		}
 		.container {
-  width: 100%;
-  max-width: 100%; /* Remove any limitations on the container width */
-}
-main {
-  width: 100%;
-  padding: 0; /* Remove any paddings */
-  margin: 0; /* Remove any margins */
-}
-.{
-	background-color:rgb(139,137,253);
-}
-.btn-group.project-buttons .visit-project-link {
-    background-color: rgb(139, 137, 253); /* Your desired color */
-    border-color: rgb(139, 137, 253); /* Adjust border color if needed */
-  }
-
-
+			width: 100%;
+			max-width: 100%; /* Remove any limitations on the container width */
+		}
+		main {
+			width: 100%;
+			padding: 0; /* Remove any paddings */
+			margin: 0; /* Remove any margins */
+		}
+		. {
+			background-color: rgb(139, 137, 253);
+		}
+		.btn-group.project-buttons .visit-project-link {
+			background-color: rgb(139, 137, 253); /* Your desired color */
+			border-color: rgb(139, 137, 253); /* Adjust border color if needed */
+		}
 	</style>
 {% endblock %}
 
@@ -142,11 +136,11 @@ main {
 								</select>
 							</div>
 							<div class="mb-3">
-								<label for="uniqueSellingPointsRange" class="form-label">Unique
-									                                    Selling Points:</label>
-								<input type="range" id="uniqueSellingPointsRange" name="uniqueSellingPointsMax" min="-100" max="100" step="1" class="form-range" value="{{ app.request.query.get('uniqueSellingPointsMax') }}">
-								<output id="uniqueSellingPointsOutput" class="form-control mt-2">{{ app.request.query.get('uniqueSellingPointsMax') }}</output>
+								<label for="uniqueSellingPointsRange" class="form-label">Unique Selling Points:</label>
+								<input type="range" id="uniqueSellingPointsRange" name="uniqueSellingPointsMax" min="0" max="100" step="1" class="form-range" value="{{ app.request.query.get('uniqueSellingPointsMax', 100) }}">
+								<output id="uniqueSellingPointsOutput" class="form-control mt-2">{{ app.request.query.get('uniqueSellingPointsMax', 100) }}</output>
 							</div>
+
 							<button type="submit" class="btn btn-success float-end">Apply Filters</button>
 						</div>
 					</div>
@@ -155,14 +149,14 @@ main {
 					<table class="table table-striped">
 						<thead>
 							<tr>
-							
+
 								<th scope="col">Project Name</th>
 								<th scope="col">Category</th>
 								<th scope="col">Unique Selling Points</th>
 								<th scope="col">state</th>
 								<th scope="col" class="project-actions">Actions</th>
-								
-								
+
+
 							</tr>
 						</thead>
 						<tbody>
@@ -172,14 +166,19 @@ main {
 										{{ project.name }}
 									</td>
 									<td class="project-details">
-										{{ project.category.name }}
+										{% if project.category is not null %}
+											{{ project.category.name }}
+										{% else %}
+											No Category
+										{% endif %}
 									</td>
 									<td class="project-details">
 										<span class="usp-{{ project.uniqueSellingPoints >= 0 ? 'positive' : 'negative' }} me-2">
 											{{ project.uniqueSellingPoints < 0 ? '-' ~ (project.uniqueSellingPoints * -1) : project.uniqueSellingPoints }}
 											{% if project.uniqueSellingPoints != 0 %}
-												<svg viewbox="0 0 10 10" xmlns="http://www.w3.org/2000/svg" style="width: 12px; height: 12px;">  <polygon points="0,0 10,0 5,10" stroke="currentColor" fill="transparent"/>
-</svg>
+												<svg viewbox="0 0 10 10" xmlns="http://www.w3.org/2000/svg" style="width: 12px; height: 12px;">
+													<polygon points="0,0 10,0 5,10" stroke="currentColor" fill="transparent"/>
+												</svg>
 											{% endif %}
 										</span>
 									</td>
@@ -192,13 +191,13 @@ main {
 											<a href="{{ path('app_projects_edit', {'id': project.id}) }}" class="btn btn-light edit-project-link">Edit</a>
 											<form method="post" action="{{ path('app_projects_delete', {'id': project.id}) }}" onsubmit="return confirm('Are you sure?');">
 												<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ project.id) }}">
-												<button type="submit" class="btn btn-light delete-project-link">Delete</button>
+												<button type="submit" class="btn btn-light1 delete-project-link">Delete</button>
 											</form>
 										</div>
 
 									</td>
-									
-									
+
+
 								</tr>
 							{% else %}
 								<tr>

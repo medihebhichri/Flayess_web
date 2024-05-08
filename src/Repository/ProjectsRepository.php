@@ -148,5 +148,39 @@ class ProjectsRepository extends ServiceEntityRepository
         }
     }
 
+    public function findByFiltersWithCategory($searchTerm, $categoryId, $status, $sortOption, $uniqueSellingPointsMax)
+    {
+        $qb = $this->createQueryBuilder('p')
+            ->leftJoin('p.category', 'c'); // Join the category association
+    
+        // Add your filter conditions here
+        if ($searchTerm) {
+            $qb->andWhere('p.name LIKE :searchTerm OR p.description LIKE :searchTerm')
+               ->setParameter('searchTerm', '%' . $searchTerm . '%');
+        }
+    
+        if ($categoryId !== null) {
+            $qb->andWhere('c.id = :categoryId')
+               ->setParameter('categoryId', $categoryId);
+        }
+    
+        if ($status !== null) {
+            $qb->andWhere('p.status = :status')
+               ->setParameter('status', $status);
+        }
+    
+        // Filter by unique selling points if provided
+        if (null !== $uniqueSellingPointsMax) {
+            $qb->andWhere('p.uniqueSellingPoints <= :uniqueSellingPointsMax')
+               ->setParameter('uniqueSellingPointsMax', $uniqueSellingPointsMax);
+        }
+    
+        // Apply sorting options
+        $this->addSortOption($qb, $sortOption);
+    
+        return $qb->getQuery()->getResult();
+    }
+    
+
     // Add more custom query methods here if needed
 }

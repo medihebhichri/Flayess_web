@@ -12,108 +12,135 @@
 	<style>
 		/* Custom Styles */
 		body {
-			background-color: rgb(83, 81, 251);
-			margin: 0;
-			padding: 0;
-			box-sizing: border-box;
-			height: 100%;
-		}
+background-color: rgb(83, 81, 251);
+margin: 0;
+padding: 0;
+box-sizing: border-box;
+height: 100%;
+}
 
-		#main-content {
-			height: calc(100vh - 6rem);
-			overflow-y: scroll;
-		}
-		.page-title {
-			padding: 2rem 0;
-			background-image: linear-gradient(to bottom right, rgb(40, 167, 69), rgb(20, 122, 37));
-			color: white;
-			display: flex;
-			align-items: center;
-			justify-content: center;
-		}
+#main-content {
+height: calc(100vh - 6rem);
+overflow-y: scroll;
+}
+.page-title {
+padding: 2rem 0;
+background-image: linear-gradient(to bottom right, rgb(40, 167, 69), rgb(20, 122, 37));
+color: white;
+display: flex;
+align-items: center;
+justify-content: center;
+}
 
-		form label {
-			font-weight: normal !important;
-		}
+form label {
+font-weight: normal !important;
+}
 
-		table th {
-			position: sticky;
-			top: 0;
-			z-index: 1;
-			background-color: #FFFFFF;
-			border-bottom: none;
-			box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-		}
+table th {
+position: sticky;
+top: 0;
+z-index: 1;
+background-color: #FFFFFF;
+border-bottom: none;
+box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
 
-		td svg {
-			width: 1em;
-			height: 1em;
-			fill: currentColor;
-			vertical-align: middle;
-			margin-top: -3px;
-		}
+td svg {
+width: 1em;
+height: 1em;
+fill: currentColor;
+vertical-align: middle;
+margin-top: -3px;
+}
 
-		tr:hover td button {
-			opacity: 1;
-			transform: translateX(0);
-		}
+tr:hover td button {
+opacity: 1;
+transform: translateX(0);
+}
 
-		tr:not(:last-child):hover td:after {
-			content: "";
-			position: absolute;
-			left: 0;
-			right: 0;
-			top: 0;
-			bottom: 0;
-			pointer-events: none;
-			opacity: 0.1;
-			background-image: radial-gradient(circle at 25%, transparent 2px, #000 2px);
-			background-size: 40px 40px;
-			background-position: 0 0, 10px 10px;
-			filter: contrast(0.5);
-		}
+tr:not(:last-child):hover td:after {
+content: "";
+position: absolute;
+left: 0;
+right: 0;
+top: 0;
+bottom: 0;
+pointer-events: none;
+opacity: 0.1;
+background-image: radial-gradient(circle at 25%, transparent 2px, #000 2px);
+background-size: 40px 40px;
+background-position: 0 0, 10px 10px;
+filter: contrast(0.5);
+}
 
-		.project-buttons {
-			visibility: hidden;
-			opacity: 0;
-			transition: all 0.2s ease-out;
-		}
+.project-buttons {
+visibility: hidden;
+opacity: 0;
+transition: all 0.2s ease-out;
+}
 
-		tr:hover .project-buttons {
-			visibility: visible;
-			opacity: 1;
-		}
+tr:hover .project-buttons {
+visibility: visible;
+opacity: 1;
+}
 
-		@media only screen and(max-width: 768px) {
-			.project-details {
-				flex: 1;
-			}
+@media only screen and (max-width: 768px) {
+.project-details {
+flex: 1;
+}
 
-			.project-actions {
-				order: 1;
-			}
+.project-actions {
+order: 1;
+}
 
-			.project-details {
-				order: 2;
-			}
-		}
-		.container {
-			width: 100%;
-			max-width: 100%; /* Remove any limitations on the container width */
-		}
-		main {
-			width: 100%;
-			padding: 0; /* Remove any paddings */
-			margin: 0; /* Remove any margins */
-		}
-		. {
-			background-color: rgb(139, 137, 253);
-		}
-		.btn-group.project-buttons .visit-project-link {
-			background-color: rgb(139, 137, 253); /* Your desired color */
-			border-color: rgb(139, 137, 253); /* Adjust border color if needed */
-		}
-	</style>
+.project-details {
+order: 2;
+}
+}
+.container {
+width: 100%;
+max-width: 100%; /* Remove any limitations on the container width /
+}
+main {
+width: 100%;
+padding: 0; / Remove any paddings /
+margin: 0; / Remove any margins /
+}
+. {
+background-color: rgb(139, 137, 253);
+}
+.btn-group.project-buttons .visit-project-link {
+background-color: rgb(139, 137, 253); / Your desired color /
+border-color: rgb(139, 137, 253); / Adjust border color if needed */
+}
+
+.btn-group.project-buttons .visit-project-link {
+background-color: rgb(139, 137, 253);
+border-color: rgb(139, 137, 253);
+border-radius: 20px; /* Good border radius /
+margin-right: 10px; / Add margin between Visit and Validate buttons */
+}
+
+.btn-group.project-buttons .btn-success {
+background-color: rgb(40, 167, 69);
+border-color: rgb(40, 167, 69);
+border-radius: 20px;
+margin-right: 10px; /* Add margin between Validate and Reject buttons */
+}
+
+.btn-group.project-buttons .btn-danger {
+background-color: rgb(220, 53, 69);
+border-color: rgb(220, 53, 69);
+border-radius: 20px;
+margin-right: 10px; /* Add margin between Reject and Delete buttons */
+}
+
+.btn-group.project-buttons .delete-project-link {
+background-color: rgb(255, 193, 7);
+border-color: rgb(255, 193, 7);
+border-radius: 20px;
+}
+</style>
 {% endblock %}
 
 {% block body %}
@@ -143,7 +170,7 @@
 							<div class="mb-3">
 								<label for="uniqueSellingPointsRange" class="form-label">Unique
 																		                                    Selling Points:</label>
-								<input type="range" id="uniqueSellingPointsRange" name="uniqueSellingPointsMax" min="-100" max="100" step="1" class="form-range" value="{{ app.request.query.get('uniqueSellingPointsMax') }}">
+								<input type="range" id="uniqueSellingPointsRange" name="uniqueSellingPointsMax" min="0" max="100" step="1" class="form-range" value="{{ app.request.query.get('uniqueSellingPointsMax') }}">
 								<output id="uniqueSellingPointsOutput" class="form-control mt-2">{{ app.request.query.get('uniqueSellingPointsMax') }}</output>
 							</div>
 							<button type="submit" class="btn btn-success float-end">Apply Filters</button>
@@ -172,7 +199,11 @@
 										{{ project.name }}
 									</td>
 									<td class="project-details">
-										{{ project.category.name }}
+										{% if project.category is not null %}
+											{{ project.category.name }}
+										{% else %}
+											No Category
+										{% endif %}
 									</td>
 									<td class="project-details">
 										<span class="usp-{{ project.uniqueSellingPoints >= 0 ? 'positive' : 'negative' }} me-2">
@@ -190,7 +221,8 @@
 											<a href="{{ path('admin_app_projects_show', {'id': project.id}) }}" class="btn btn-light visit-project-link">Visit</a>
 											<form method="post" action="{{ path('admin_app_projects_update_state', {'id': project.id}) }}">
 												<input type="hidden" name="action" value="validate">
-												<button type="submit" class="btn btn-success">Validate</button>
+												<button id="validateButton" type="submit" class="btn btn-success">Validate</button>
+
 											</form>
 
 											<form method="post" action="{{ path('admin_app_projects_update_state', {'id': project.id}) }}">
@@ -235,4 +267,49 @@
 			Flayess
 		</div>
 	</div>
-</div></footer><script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0-alpha1/js/bootstrap.bundle.min.js"></script>{% endblock %}
+</div></footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0-alpha1/js/bootstrap.bundle.min.js"></script>
+<script>
+        document.addEventListener("DOMContentLoaded", () => {
+
+    const button = document.getElementById("validateButton");
+
+    // Add click event listener to the button
+    button.addEventListener("click", () => {
+        const myHeaders = new Headers();
+        myHeaders.append("Authorization", "App 1a938dacb4487b5560fa9010d3de9201-0b9d82f9-3d3f-460b-bd77-860632268a27");
+        myHeaders.append("Content-Type", "application/json");
+        myHeaders.append("Accept", "application/json");
+
+        const raw = JSON.stringify({
+            "messages": [
+                {
+                    "destinations": [{"to": "21626653671"}],
+                    "from": "ServiceSMS",
+                    "text": "Your Project has been approved!."
+                }
+            ]
+        });
+
+        const requestOptions = {
+            method: "POST",
+            headers: myHeaders,
+            body: raw,
+            redirect: "follow"
+        };
+
+        fetch("https://1vll2d.api.infobip.com/sms/2/text/advanced", requestOptions)
+            .then((response) => response.text())
+            .then((result) => {
+                console.log(result);
+                alert("SMS sent successfully!"); // Optional: Show an alert message
+            })
+            .catch((error) => {
+                console.error(error);
+                alert("Failed to send SMS."); // Optional: Show an alert message
+            });
+    });
+});
+
+    </script>
+{% endblock %}
