@@ -66,6 +66,12 @@ class CategoriesRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+    public function save(Categories $category): void
+    {
+        $entityManager = $this->getEntityManager();
+        $entityManager->persist($category);
+        $entityManager->flush();
+    }
     
     public function remove(Categories $category, bool $flush = true): void
 {
@@ -74,5 +80,6 @@ class CategoriesRepository extends ServiceEntityRepository
         $this->_em->flush();
     }
 }
+
 
 }

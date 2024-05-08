@@ -1,37 +1,181 @@
-{{ form_start(form) }}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Project Form</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+Knujsl7/1L_dstPt3HV5HzF6Gvk/e3wDpgfTgo4JhXQtgM" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Roboto', sans-serif;
+            background-color: #f2f2f2;
+        }
 
-<div class="row">
-    <div class="col-md-6">
-        <h3>Project Information</h3>
-        {{ form_row(form.name) }}
-        {{ form_row(form.description) }}
-        {{ form_row(form.targetAudience) }}
-        {{ form_row(form.category) }}
+        .container {
+            max-width: 1200px;
+            margin: auto;
+            overflow: hidden;
+            padding: 2rem;
+        }
+
+        h3 {
+            color: #333;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        label {
+            display: inline-block;
+            margin-top: 0.5rem;
+            font-weight: bold;
+            vertical-align: top;
+            width: 100%;
+            margin-bottom: 0.25rem;
+        }
+
+        input[type="text"], select, .datepicker {
+            width: 100%;
+            padding: 0.5rem;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-shadow: none;
+            outline: none;
+        }
+
+        /* Custom styles for buttons */
+        .custom-btn {
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 2rem;
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            font-weight: bold;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .submit-btn {
+            margin-top: 2rem;
+            text-align: center;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+        }
+
+        .submit-btn:hover {
+            background-color: #3e8e41;
+        }
+
+        .upload-btn {
+            background-color: #FFCCCC;
+            color: black;
+            border: none;
+        }
+
+        .upload-btn:hover {
+            background-color: #FFAD4D;
+        }
+
+        img#image-preview {
+            max-width: 100%;
+            height: auto;
+            object-fit: cover;
+            margin-top: 1rem;
+            border-radius: 4px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        img#image-preview:hover {
+            transform: scale(1.05);
+        }
+
+        .hidden-fields {
+            display: none;
+        }
+
+        @media screen and (max-width: 768px) {
+            label, h3 {
+                font-size: 1.2rem;
+            }
+
+            button {
+                width: 100%;
+                margin: 1rem auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <form method="post">
+            {{ form_widget(form._token) }}
+            <div class="row">
+                <div class="col-lg-6 mb-4">
+                    <h3>Project Information</h3>
+                    <!-- Add Bootstrap classes here -->
+                    {{ form_row(form.name, {'attr': {'class': 'form-control'}}) }}
+                    {{ form_row(form.description, {'attr': {'class': 'form-control'}}) }}
+                    {{ form_row(form.targetAudience, {'attr': {'class': 'form-select combobox'}}) }}
+                    {{ form_row(form.category, {'attr': {'class': 'form-control'}}) }}
+                </div>
+
+                <div class="col-lg-6 mb-4">
+                    <h3>Project Details</h3>
+                    <!-- Add Bootstrap classes here -->
+                    {{ form_row(form.demandInMarket, {'attr': {'class': 'form-control'}}) }}
+                    {{ form_row(form.developmentTimeline, {'attr': {'class': 'form-control datepicker'}}) }}
+                    {{ form_row(form.budgetFundingRequirements, {'attr': {'class': 'form-control'}}) }}
+                    {{ form_row(form.riskAnalysis, {'attr': {'class': 'form-control'}}) }}
+                    {{ form_row(form.marketStrategy, {'attr': {'class': 'form-control'}}) }}
+                    {{ form_row(form.exitStrategy, {'attr': {'class': 'form-control'}}) }}
+                    {{ form_row(form.teamBackground, {'attr': {'class': 'form-control'}}) }}
+                    {{ form_row(form.tags, {'attr': {'class': 'form-control'}}) }}
+                    {{ form_row(form.uniqueSellingPoints, {'attr': {'class': 'form-control'}}) }}
+                    {{ form_row(form.dailyPriceOfAssets, {'attr': {'class': 'form-control'}}) }}
+                    {{ form_row(form.investorsEquity, {'attr': {'class': 'form-control'}}) }}
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-lg-12">
+                    <h3>Upload Image</h3>
+                    <!-- Add Bootstrap classes here -->
+                    <div class="input-group">
+                      {{ form_row(form.image, {'attr': {'class': 'form-control', 'aria-describedby': 'inputGroupFileAddon01'}}) }}
+                    </div>
+                    <img id="image-preview" src="#" alt="Preview Image" style="display: none;">
+                </div>
+            </div>
+
+            <!-- Use Bootstrap classes for buttons too -->
+            <button type="submit" class="btn custom-btn submit-btn mt-3">{{ button_label|default('Save') }}</button>
+        </form>
     </div>
 
-    <div class="col-md-6">
-        <h3>Project Details</h3>
-        {{ form_row(form.demandInMarket) }}
-        {{ form_row(form.developmentTimeline) }}
-        {{ form_row(form.budgetFundingRequirements) }}
-        {{ form_row(form.riskAnalysis) }}
-        {{ form_row(form.marketStrategy) }}
-        {{ form_row(form.exitStrategy) }}
-        {{ form_row(form.teamBackground) }}
-        {{ form_row(form.tags) }}
-        {{ form_row(form.uniqueSellingPoints) }}
-        {{ form_row(form.dailyPriceOfAssets) }}
-        {{ form_row(form.investorsEquity) }}
-    </div>
-</div>
-
-<div class="row">
-    <div class="col-md-12">
-        <h3>Upload Image</h3>
-        {{ form_row(form.image) }}
-    </div>
-</div>
-
-<button type="submit" class="btn btn-primary">{{ button_label|default('Save') }}</button>
-
-{{ form_end(form) }}
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz4fnFO9gybBud7l5eOAowJfajhczvt/8VEvNsS4Uog+gNQxa5VXLE4Dg/" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js" integrity="sha384-cn7l7gDp0eyniUwwAZgrzD06kc/tftFf19TOAs2zVinnD/C7EnineWYWBficBUav" crossorigin="anonymous"></script>
+    <script>
+        $("#{{ form.image.vars.id }}").on("change", function() {
+            let previewImage = $('#image-preview');
+            if ($("#{{ form.image.vars.id }}")[0].files && $("#{{ form.image.vars.id }}")[0].files[0]) {
+                let reader = new FileReader();
+                reader.onload = function(e) {
+                    previewImage.attr('src', e.target.result).show();
+                };
+                reader.readAsDataURL($("#{{ form.image.vars.id }}")[0].files[0]);
+            } else {
+                previewImage.hide().attr('src', '#');
+            }
+        });
+    </script>
+</body>
+</html>

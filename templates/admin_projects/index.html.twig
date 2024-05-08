@@ -1,0 +1,315 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+	Project Management
+{% endblock %}
+
+{% block stylesheets %}
+	{{ parent() }}
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"/>
+	<link rel="stylesheet" href="{{ asset('css/style.css') }}">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0-alpha1/css/bootstrap.min.css">
+	<style>
+		/* Custom Styles */
+		body {
+background-color: rgb(83, 81, 251);
+margin: 0;
+padding: 0;
+box-sizing: border-box;
+height: 100%;
+}
+
+#main-content {
+height: calc(100vh - 6rem);
+overflow-y: scroll;
+}
+.page-title {
+padding: 2rem 0;
+background-image: linear-gradient(to bottom right, rgb(40, 167, 69), rgb(20, 122, 37));
+color: white;
+display: flex;
+align-items: center;
+justify-content: center;
+}
+
+form label {
+font-weight: normal !important;
+}
+
+table th {
+position: sticky;
+top: 0;
+z-index: 1;
+background-color: #FFFFFF;
+border-bottom: none;
+box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+td svg {
+width: 1em;
+height: 1em;
+fill: currentColor;
+vertical-align: middle;
+margin-top: -3px;
+}
+
+tr:hover td button {
+opacity: 1;
+transform: translateX(0);
+}
+
+tr:not(:last-child):hover td:after {
+content: "";
+position: absolute;
+left: 0;
+right: 0;
+top: 0;
+bottom: 0;
+pointer-events: none;
+opacity: 0.1;
+background-image: radial-gradient(circle at 25%, transparent 2px, #000 2px);
+background-size: 40px 40px;
+background-position: 0 0, 10px 10px;
+filter: contrast(0.5);
+}
+
+.project-buttons {
+visibility: hidden;
+opacity: 0;
+transition: all 0.2s ease-out;
+}
+
+tr:hover .project-buttons {
+visibility: visible;
+opacity: 1;
+}
+
+@media only screen and (max-width: 768px) {
+.project-details {
+flex: 1;
+}
+
+.project-actions {
+order: 1;
+}
+
+.project-details {
+order: 2;
+}
+}
+.container {
+width: 100%;
+max-width: 100%; /* Remove any limitations on the container width /
+}
+main {
+width: 100%;
+padding: 0; / Remove any paddings /
+margin: 0; / Remove any margins /
+}
+. {
+background-color: rgb(139, 137, 253);
+}
+.btn-group.project-buttons .visit-project-link {
+background-color: rgb(139, 137, 253); / Your desired color /
+border-color: rgb(139, 137, 253); / Adjust border color if needed */
+}
+
+.btn-group.project-buttons .visit-project-link {
+background-color: rgb(139, 137, 253);
+border-color: rgb(139, 137, 253);
+border-radius: 20px; /* Good border radius /
+margin-right: 10px; / Add margin between Visit and Validate buttons */
+}
+
+.btn-group.project-buttons .btn-success {
+background-color: rgb(40, 167, 69);
+border-color: rgb(40, 167, 69);
+border-radius: 20px;
+margin-right: 10px; /* Add margin between Validate and Reject buttons */
+}
+
+.btn-group.project-buttons .btn-danger {
+background-color: rgb(220, 53, 69);
+border-color: rgb(220, 53, 69);
+border-radius: 20px;
+margin-right: 10px; /* Add margin between Reject and Delete buttons */
+}
+
+.btn-group.project-buttons .delete-project-link {
+background-color: rgb(255, 193, 7);
+border-color: rgb(255, 193, 7);
+border-radius: 20px;
+}
+</style>
+{% endblock %}
+
+{% block body %}
+	<main class="py-6 container">
+		<form id="searchForm" action="{{ path('admin_app_projects_index') }}" method="GET">
+			<div class="row g-3">
+				<aside class="col-md-3">
+					<div class="card">
+						<div class="card-body">
+							<h3 class="card-title">Filter &amp; Search</h3>
+							<hr/>
+							<div class="mb-3">
+								<label for="searchInput" class="form-label">Search Input:</label>
+								<input type="text" id="searchInput" name="search" placeholder="Search projects..." class="form-control" value="{{ app.request.query.get('search') }}">
+							</div>
+							<div class="mb-3">
+								<label for="categorySelect" class="form-label">Category:</label>
+								<select id="categorySelect" name="category" class="form-select">
+									<option value="" selected hidden>All Categories</option>
+									{% for category in categories %}
+										<option value="{{ category.id }}" {% if category.id == app.request.query.get('category') %} selected {% endif %}>
+											{{ category.categoryName }}
+										</option>
+									{% endfor %}
+								</select>
+							</div>
+							<div class="mb-3">
+								<label for="uniqueSellingPointsRange" class="form-label">Unique
+																		                                    Selling Points:</label>
+								<input type="range" id="uniqueSellingPointsRange" name="uniqueSellingPointsMax" min="0" max="100" step="1" class="form-range" value="{{ app.request.query.get('uniqueSellingPointsMax') }}">
+								<output id="uniqueSellingPointsOutput" class="form-control mt-2">{{ app.request.query.get('uniqueSellingPointsMax') }}</output>
+							</div>
+							<button type="submit" class="btn btn-success float-end">Apply Filters</button>
+						</div>
+					</div>
+				</aside>
+				<section class="col-md-9">
+					<table class="table table-striped">
+						<thead>
+							<tr>
+								<th scope="col">user name</th>
+								<th scope="col">Project Name</th>
+								<th scope="col">Category</th>
+								<th scope="col">Unique Selling Points</th>
+
+								<th scope="col" class="project-actions">Actions</th>
+
+							</tr>
+						</thead>
+						<tbody>
+							{% for project in projects %}
+								<tr>
+									<td>User 1
+									</td>
+									<td class="project-details">
+										{{ project.name }}
+									</td>
+									<td class="project-details">
+										{% if project.category is not null %}
+											{{ project.category.name }}
+										{% else %}
+											No Category
+										{% endif %}
+									</td>
+									<td class="project-details">
+										<span class="usp-{{ project.uniqueSellingPoints >= 0 ? 'positive' : 'negative' }} me-2">
+											{{ project.uniqueSellingPoints < 0 ? '-' ~ (project.uniqueSellingPoints * -1) : project.uniqueSellingPoints }}
+											{% if project.uniqueSellingPoints != 0 %}
+												<svg viewbox="0 0 10 10" xmlns="http://www.w3.org/2000/svg" style="width: 12px; height: 12px;">
+													<polygon points="0,0 10,0 5,10" stroke="currentColor" fill="transparent"/>
+												</svg>
+											{% endif %}
+										</span>
+									</td>
+
+									<td class="project-actions">
+										<div class="btn-group project-buttons">
+											<a href="{{ path('admin_app_projects_show', {'id': project.id}) }}" class="btn btn-light visit-project-link">Visit</a>
+											<form method="post" action="{{ path('admin_app_projects_update_state', {'id': project.id}) }}">
+												<input type="hidden" name="action" value="validate">
+												<button id="validateButton" type="submit" class="btn btn-success">Validate</button>
+
+											</form>
+
+											<form method="post" action="{{ path('admin_app_projects_update_state', {'id': project.id}) }}">
+												<input type="hidden" name="action" value="reject">
+												<button type="submit" class="btn btn-danger">Reject</button>
+											</form>
+
+											<form method="post" action="{{ path('app_projects_delete', {'id': project.id}) }}" onsubmit="return confirm('Are you sure?');">
+												<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ project.id) }}">
+												<button type="submit" class="btn btn-light delete-project-link">Delete</button>
+											</form>
+										</div>
+
+									</td>
+
+								</tr>
+							{% else %}
+								<tr>
+									<td colspan="4" class="text-center">No projects found.</td>
+								</tr>
+							{% endfor %}
+						</tbody>
+					</table>
+				</section>
+			</div>
+		</form>
+	</main>
+	<div class="bg-white rounded-lg shadow-md p-8 mt-6">
+		<div class="w-full text-center">
+			<style scoped>
+				.btn-primary {
+					background-color: rgb(83, 81, 251) !important; /* Change this HEX code to the one you prefer */
+				}
+			</style>
+	</div>
+</div></div><footer class="bg-dark text-white py-3 fixed-bottom">
+<div class="container">
+	<div class="row">
+		<div class="col-12 text-center">
+			© Copyright
+			{{ "now" | date("Y") }}
+			Flayess
+		</div>
+	</div>
+</div></footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0-alpha1/js/bootstrap.bundle.min.js"></script>
+<script>
+        document.addEventListener("DOMContentLoaded", () => {
+
+    const button = document.getElementById("validateButton");
+
+    // Add click event listener to the button
+    button.addEventListener("click", () => {
+        const myHeaders = new Headers();
+        myHeaders.append("Authorization", "App 1a938dacb4487b5560fa9010d3de9201-0b9d82f9-3d3f-460b-bd77-860632268a27");
+        myHeaders.append("Content-Type", "application/json");
+        myHeaders.append("Accept", "application/json");
+
+        const raw = JSON.stringify({
+            "messages": [
+                {
+                    "destinations": [{"to": "21626653671"}],
+                    "from": "ServiceSMS",
+                    "text": "Your Project has been approved!."
+                }
+            ]
+        });
+
+        const requestOptions = {
+            method: "POST",
+            headers: myHeaders,
+            body: raw,
+            redirect: "follow"
+        };
+
+        fetch("https://1vll2d.api.infobip.com/sms/2/text/advanced", requestOptions)
+            .then((response) => response.text())
+            .then((result) => {
+                console.log(result);
+                alert("SMS sent successfully!"); // Optional: Show an alert message
+            })
+            .catch((error) => {
+                console.error(error);
+                alert("Failed to send SMS."); // Optional: Show an alert message
+            });
+    });
+});
+
+    </script>
+{% endblock %}

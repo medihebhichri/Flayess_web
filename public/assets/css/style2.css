@@ -1,0 +1,130 @@
+/* Custom Variables */
+:root {
+    --clr-primary: #FF6B81;
+    --clr-secondary: #FFEADF;
+    --clr-background: #F2F2F2;
+    --clr-dark: #1A1A1A;
+    --clr-light: #FFFFFF;
+  }
+  
+  body {
+    background-color: var(--clr-background);
+    color: var(--clr-dark);
+    font-family: 'Roboto', sans-serif;
+  }
+  
+  h1, .title {
+    font-size: 3rem;
+    line-height: 1.2;
+    margin-bottom: 2rem;
+    text-align: center;
+    letter-spacing: 0.05em;
+  }
+  
+  h2 {
+    font-size: 2rem;
+    font-weight: normal;
+    margin-top: 3rem;
+    margin-bottom: 1rem;
+  }
+  
+  /* Container Styles */
+  .container {
+    width: calc(100vw - 4rem);
+    max-width: 120rem;
+    margin: auto;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  /* Grid Layout for Project Table */
+  .project-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(30rem, 1fr));
+    grid-gap: 2rem;
+    width: 100%;
+  }
+  
+  /* Card Styles */
+  .card {
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.1);
+    border-radius: 0.5rem;
+    background-color: white;
+    transition: all 0.2s ease-in-out;
+  }
+  
+  .card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.2);
+  }
+  
+  .card img {
+    width: 100%;
+    height: 18rem;
+    object-fit: cover;
+  }
+  
+  .card__description {
+    padding: 1.5rem;
+  }
+  
+  .card__title {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+  }
+  
+  .card__actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 1.5rem;
+  }
+  
+  .card__action-button {
+    display: flex;
+    align-items: center;
+    background-color: var(--clr-primary);
+    color: var(--clr-light);
+    border-radius: 0.25rem;
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
+  }
+  
+  .card__action-button:hover {
+    background-color: lighten(var(--clr-primary), 5%);
+  }
+  
+  .pagination {
+    display: flex;
+    list-style-type: none;
+    padding: 0;
+    margin: 3rem 0;
+  }
+  
+  .pagination li {
+    margin: 0 0.5rem;
+  }
+  
+  .pagination a {
+    display: block;
+    padding: 0.5rem 1rem;
+    background-color: var(--clr-primary);
+    color: var(--clr-light);
+    border-radius: 0.25rem;
+    text-decoration: none;
+    transition: background-color 0.2s ease-in-out;
+  }
+  
+  .pagination a:hover {
+    background-color: lighten(var(--clr-primary), 5%);
+  }
+  
+  @media screen and (max-width: 768px) {
+    /* Adjustments for smaller screens */
+  }
